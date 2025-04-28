@@ -1,12 +1,16 @@
 package com.devsuperior.descatalog.services;
 
 
+import com.devsuperior.descatalog.dto.CategoryDTO;
 import com.devsuperior.descatalog.entities.Category;
 import com.devsuperior.descatalog.repositories.CategoryRepository;
 
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
+
 import org.springframework.transaction.annotation.Transactional;
 
 
@@ -21,7 +25,9 @@ public class CategoryService {
     }
 
     @Transactional(readOnly = true)
-    public List<Category> findAll() {
-        return categoryRepository.findAll();
+    public List<CategoryDTO> findAll() {
+        List<Category> list = categoryRepository.findAll();
+        return list.stream().
+                map(x -> new CategoryDTO(x)).collect(Collectors.toList());
     }
 }
