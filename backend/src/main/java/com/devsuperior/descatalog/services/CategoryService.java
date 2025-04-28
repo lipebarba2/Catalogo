@@ -19,6 +19,8 @@ import org.springframework.transaction.annotation.Transactional;
 @Service
 public class CategoryService {
 
+
+    public Object insert;
     private CategoryRepository categoryRepository;
 
     // Dependency Injection
@@ -37,6 +39,14 @@ public class CategoryService {
     public CategoryDTO findById(Long id) {
         Optional<Category> obj = categoryRepository.findById(id);
         Category entity = obj.orElseThrow(() -> new EntityNotFoundException("Entity not found"));
+        return new CategoryDTO(entity);
+    }
+
+    @Transactional
+    public CategoryDTO insert(CategoryDTO dto) {
+        Category entity = new Category();
+        entity.setName(dto.getName());
+        entity =  categoryRepository.save(entity);
         return new CategoryDTO(entity);
     }
 }
